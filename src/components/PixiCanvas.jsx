@@ -18,7 +18,7 @@ const PixiCanvas = ({castContext}) => {
 
     pixiAppRef.current = app;
 
-    const backgroundTexture = PIXI.Texture.from('/back.jpg');
+    const backgroundTexture = PIXI.Texture.from('/purpleBK.jpg');
     const backgroundSprite  = new PIXI.Sprite(backgroundTexture);
     backgroundSprite.width = app.screen.width;
     backgroundSprite.height = app.screen.height;
@@ -26,26 +26,37 @@ const PixiCanvas = ({castContext}) => {
     backgroundSprite.position.set(0, 0);
     app.stage.addChild(backgroundSprite);
     
-    PIXI.Assets.load('/champi2.png').then((texture) => {
+    PIXI.Assets.load('/pixil-frame-0.png').then((texture) => {
       const champignon = new PIXI.Sprite(texture);
-      champignon.anchor.set(2);
-      champignon.x = app.renderer.width / 2;
+      champignon.anchor.set(1);
+      champignon.x = app.renderer.width / 1;
       champignon.y = app.renderer.height / 2;
-      champignon.scale.set(1);
+      champignon.scale.set(5);
       app.stage.addChild(champignon); 
     });
 
-    const text = new PIXI.Text('Bienvenue à mon jeu', {
-      fontFamily: 'Arial',
-      fontSize: 44,
-      fill: 0xffffff,
-    });
-    // Coordonnées du texte
-    text.x = 300;
-    text.y = 400;
-    // Ajout du texte à la vue principale
-    app.stage.addChild(text);
+    // const text = new PIXI.Text('Bienvenue RunnerX', {
+    //   fontFamily: 'Arial',
+    //   fontSize: 44,
+    //   fill: 0xffffff,
+    // });
+    // // Coordonnées du texte
+    // text.x = 300;
+    // text.y = 400;
+    // // Ajout du texte à la vue principale
+    // app.stage.addChild(text);
+    var graphics = new PIXI.Graphics();
 
+    graphics.beginFill(0x000);
+    
+    // set the line style to have a width of 5 and set the color to red
+    graphics.lineStyle(5, 0x000);
+    
+    // draw a rectangle
+    //  0,0 hauteur,largeur
+    graphics.drawRect(2, 0, 400, 100);
+    
+    app.stage.addChild(graphics);
     // Un exemple de forme en Pixi
     const bonhommeCarre = new PIXI.Graphics();
     bonhommeCarre.beginFill(0xff0000);

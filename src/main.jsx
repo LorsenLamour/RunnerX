@@ -2,13 +2,15 @@
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import PixiCanvas from './components/PixiCanvas';
+import JeuAvecBouton from './components/BoutonStart';
 
 
 function App({ castContext }) {
   
   return (
-    <div style={{ color: 'red', fontSize: '2rem', padding: '2rem' }}>
-      <PixiCanvas castContext={castContext}/>
+    <div style={{  }}>
+
+      <JeuAvecBouton  />
     </div>
   );
 }
