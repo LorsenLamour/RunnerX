@@ -1,5 +1,7 @@
 # cls411-jeu
 
+Receiver ID: 6BE88BF2
+
 # Installation des libs
 
     npm i
