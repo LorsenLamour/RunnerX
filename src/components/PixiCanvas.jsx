@@ -7,18 +7,19 @@ const PixiCanvas = ({castContext}) => {
   const spriteRef = React.useRef(null); // Référence à ton sprite principal
   const [posX, setPosX] = React.useState(30);
   const [posY, setPosY] = React.useState(30);
+  
 
   React.useEffect(() => {
     const app = new PIXI.Application({
       view: canvasRef.current,
-      width: 1080,
+      width: 1280,
       height: 720,
       backgroundAlpha: 0,
     });
 
     pixiAppRef.current = app;
 
-    const backgroundTexture = PIXI.Texture.from('/purpleBK.jpg');
+    const backgroundTexture = PIXI.Texture.from('/background.png');
     const backgroundSprite  = new PIXI.Sprite(backgroundTexture);
     backgroundSprite.width = app.screen.width;
     backgroundSprite.height = app.screen.height;
@@ -26,37 +27,25 @@ const PixiCanvas = ({castContext}) => {
     backgroundSprite.position.set(0, 0);
     app.stage.addChild(backgroundSprite);
     
-    PIXI.Assets.load('/pixil-frame-0.png').then((texture) => {
-      const champignon = new PIXI.Sprite(texture);
-      champignon.anchor.set(1);
-      champignon.x = app.renderer.width / 1;
-      champignon.y = app.renderer.height / 2;
-      champignon.scale.set(5);
-      app.stage.addChild(champignon); 
-    });
-
-    // const text = new PIXI.Text('Bienvenue RunnerX', {
-    //   fontFamily: 'Arial',
-    //   fontSize: 44,
-    //   fill: 0xffffff,
+    // PIXI.Assets.load('/pixil-frame-0.png').then((texture) => {
+    //   const champignon = new PIXI.Sprite(texture);
+    //   champignon.anchor.set(1);
+    //   champignon.x = app.renderer.width / 1;
+    //   champignon.y = app.renderer.height / 2;
+    //   champignon.scale.set(5);
+    //   app.stage.addChild(champignon); 
     // });
-    // // Coordonnées du texte
-    // text.x = 300;
-    // text.y = 400;
-    // // Ajout du texte à la vue principale
-    // app.stage.addChild(text);
-    var graphics = new PIXI.Graphics();
 
-    graphics.beginFill(0x000);
     
+    var rectangle = new PIXI.Graphics();
+    rectangle.beginFill(0x000);
     // set the line style to have a width of 5 and set the color to red
-    graphics.lineStyle(5, 0x000);
-    
+    rectangle.lineStyle(5, 0x000);
     // draw a rectangle
     //  0,0 hauteur,largeur
-    graphics.drawRect(2, 0, 400, 100);
-    
-    app.stage.addChild(graphics);
+    rectangle.drawRect(120, 530, 200, 50);
+    app.stage.addChild(rectangle);
+
     // Un exemple de forme en Pixi
     const bonhommeCarre = new PIXI.Graphics();
     bonhommeCarre.beginFill(0xff0000);
