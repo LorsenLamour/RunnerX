@@ -26,27 +26,85 @@ const PixiCanvas = ({castContext}) => {
     backgroundSprite.anchor.set(0); // alignement haut-gauche
     backgroundSprite.position.set(0, 0);
     app.stage.addChild(backgroundSprite);
-    
-    // PIXI.Assets.load('/pixil-frame-0.png').then((texture) => {
-    //   const champignon = new PIXI.Sprite(texture);
-    //   champignon.anchor.set(1);
-    //   champignon.x = app.renderer.width / 1;
-    //   champignon.y = app.renderer.height / 2;
-    //   champignon.scale.set(5);
-    //   app.stage.addChild(champignon); 
-    // });
 
-    
-    var rectangle = new PIXI.Graphics();
-    rectangle.beginFill(0x000);
-    // set the line style to have a width of 5 and set the color to red
-    rectangle.lineStyle(5, 0x000);
-    // draw a rectangle
-    //  0,0 hauteur,largeur
-    rectangle.drawRect(120, 530, 200, 50);
-    app.stage.addChild(rectangle);
 
-    // Un exemple de forme en Pixi
+    const createObstacle = (x, y, width, height) => {
+      const obstacle = new PIXI.Graphics();
+    
+      // Draw rectangle
+      obstacle.beginFill(0x000);
+      obstacle.drawRect(x, y, width, height);
+      obstacle.endFill();
+    
+   
+    
+      return obstacle;
+    };
+    const obstacles = [
+      // x=avance, y = haut et bas
+      createObstacle(9, 500, 140, 30),//Départ
+      createObstacle(300, 400, 150, 30),//2
+      createObstacle(500, 600, 150, 50), //3
+      createObstacle(550, 300, 200, 30),//4
+      createObstacle(1130, 600, 150, 30),//final
+      createObstacle(800, 450, 200, 30)//6
+    ];
+    
+    obstacles.forEach(ob => app.stage.addChild(ob));
+    
+    //Mes triangles
+
+    const deathTriangle = (x, y, width, height) => {
+      const triangle = new PIXI.Graphics();
+    
+      triangle.beginFill(0xff0000); // couleur rouge
+    
+      // Les points de mon triangle 
+      triangle.moveTo(x + width / 2, y);         // le sommet
+      triangle.lineTo(x, y + height);            // gauche
+      triangle.lineTo(x + width, y + height);    // droit
+      triangle.lineTo(x + width / 2, y);         // bas
+    
+      triangle.endFill();
+    
+      return triangle;
+    };
+    
+
+    const deathTriangles = [
+      deathTriangle(350, 350, 50, 50),//1
+      deathTriangle(699, 250, 50, 50),// 2
+      deathTriangle(899, 400, 50, 50),//3
+      deathTriangle(1199, 550, 50, 50)//4
+    ];
+    
+    deathTriangles.forEach(obt => app.stage.addChild(obt));
+    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    // Un mon personnage Pixi
     const bonhommeCarre = new PIXI.Graphics();
     bonhommeCarre.beginFill(0xff0000);
     bonhommeCarre.drawRect(posX+30, posY+30, 20, 20);
