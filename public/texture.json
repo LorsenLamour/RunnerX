@@ -1,0 +1,135 @@
+{
+  "frames": {
+    "frame.png": {
+      "frame": {
+        "x": 0,
+        "y": 0,
+        "w": 299,
+        "h": 272
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 3,
+        "y": 5,
+        "w": 299,
+        "h": 272
+      },
+      "sourceSize": {
+        "w": 305,
+        "h": 280
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jump_fall.png": {
+      "frame": {
+        "x": 299,
+        "y": 0,
+        "w": 299,
+        "h": 270
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 4,
+        "y": 10,
+        "w": 299,
+        "h": 270
+      },
+      "sourceSize": {
+        "w": 305,
+        "h": 280
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "frame-1.png": {
+      "frame": {
+        "x": 598,
+        "y": 0,
+        "w": 299,
+        "h": 266
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 3,
+        "w": 299,
+        "h": 266
+      },
+      "sourceSize": {
+        "w": 312,
+        "h": 269
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "frame-2.png": {
+      "frame": {
+        "x": 897,
+        "y": 0,
+        "w": 299,
+        "h": 259
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 7,
+        "y": 10,
+        "w": 299,
+        "h": 259
+      },
+      "sourceSize": {
+        "w": 312,
+        "h": 269
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    },
+    "jump_up.png": {
+      "frame": {
+        "x": 1196,
+        "y": 0,
+        "w": 294,
+        "h": 276
+      },
+      "rotated": false,
+      "trimmed": true,
+      "spriteSourceSize": {
+        "x": 6,
+        "y": 4,
+        "w": 294,
+        "h": 276
+      },
+      "sourceSize": {
+        "w": 305,
+        "h": 280
+      },
+      "pivot": {
+        "x": 0.5,
+        "y": 0.5
+      }
+    }
+  },
+  "meta": {
+    "app": "http://free-tex-packer.com",
+    "version": "0.6.7",
+    "image": "texture.png",
+    "format": "RGBA8888",
+    "size": {
+      "w": 1490,
+      "h": 276
+    },
+    "scale": 1
+  }
+}

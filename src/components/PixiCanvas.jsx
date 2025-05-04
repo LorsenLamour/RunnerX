@@ -1,13 +1,14 @@
 import * as PIXI from 'pixi.js';
 import React from 'react';
 
-const PixiCanvas = ({castContext}) => {
+
+const PixiCanvas = ({ castContext }) => {
   const canvasRef = React.useRef(null);
   const pixiAppRef = React.useRef(null); // Référence persistante de PIXI.Application
   const spriteRef = React.useRef(null); // Référence à ton sprite principal
   const [posX, setPosX] = React.useState(30);
   const [posY, setPosY] = React.useState(30);
-  
+
 
   React.useEffect(() => {
     const app = new PIXI.Application({
@@ -20,7 +21,7 @@ const PixiCanvas = ({castContext}) => {
     pixiAppRef.current = app;
 
     const backgroundTexture = PIXI.Texture.from('/background.png');
-    const backgroundSprite  = new PIXI.Sprite(backgroundTexture);
+    const backgroundSprite = new PIXI.Sprite(backgroundTexture);
     backgroundSprite.width = app.screen.width;
     backgroundSprite.height = app.screen.height;
     backgroundSprite.anchor.set(0); // alignement haut-gauche
@@ -30,14 +31,14 @@ const PixiCanvas = ({castContext}) => {
 
     const createObstacle = (x, y, width, height) => {
       const obstacle = new PIXI.Graphics();
-    
+
       // Draw rectangle
       obstacle.beginFill(0x000);
       obstacle.drawRect(x, y, width, height);
       obstacle.endFill();
-    
-   
-    
+
+
+
       return obstacle;
     };
     const obstacles = [
@@ -49,27 +50,25 @@ const PixiCanvas = ({castContext}) => {
       createObstacle(1130, 600, 150, 30),//final
       createObstacle(800, 450, 200, 30)//6
     ];
-    
+
     obstacles.forEach(ob => app.stage.addChild(ob));
-    
+
     //Mes triangles
 
     const deathTriangle = (x, y, width, height) => {
       const triangle = new PIXI.Graphics();
-    
+
       triangle.beginFill(0xff0000); // couleur rouge
-    
       // Les points de mon triangle 
       triangle.moveTo(x + width / 2, y);         // le sommet
       triangle.lineTo(x, y + height);            // gauche
       triangle.lineTo(x + width, y + height);    // droit
       triangle.lineTo(x + width / 2, y);         // bas
-    
       triangle.endFill();
-    
+
       return triangle;
     };
-    
+
 
     const deathTriangles = [
       deathTriangle(350, 350, 50, 50),//1
@@ -77,44 +76,33 @@ const PixiCanvas = ({castContext}) => {
       deathTriangle(899, 400, 50, 50),//3
       deathTriangle(1199, 550, 50, 50)//4
     ];
-    
     deathTriangles.forEach(obt => app.stage.addChild(obt));
-    
 
 
 
+    // My sheet 
+    PIXI.Loader.shared
+      .add("spritesheet", "/texture.json")
+      .load((loader, resources) => {
+        const sheet = resources["spritesheet"].spritesheet;
+        console.log(Object.keys(sheet.textures));  // Debugging textures
+
+        // Walk animation
+        const walkAnim = new PIXI.AnimatedSprite([
+          sheet.textures["frame.png"],
+          sheet.textures["frame-1.png"],
+          sheet.textures["frame-2.png"]
+        ]);
+        walkAnim.animationSpeed = 0.1;
+        walkAnim.loop = true;
+        walkAnim.play();
+        walkAnim.x = 100;
+        walkAnim.y = 100;
+        app.stage.addChild(walkAnim);
+      });
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    // Un mon personnage Pixi
-    const bonhommeCarre = new PIXI.Graphics();
-    bonhommeCarre.beginFill(0xff0000);
-    bonhommeCarre.drawRect(posX+30, posY+30, 20, 20);
-    bonhommeCarre.endFill();
-    spriteRef.current = bonhommeCarre;
-    app.stage.addChild(bonhommeCarre);
-
-    return () => {
-      app.destroy(true, true);
-    };
   }, []);
 
 
@@ -122,15 +110,15 @@ const PixiCanvas = ({castContext}) => {
     if (!castContext) return;
 
     const CHANNEL = 'urn:x-cast:testChannel';
-    castContext.addCustomMessageListener(CHANNEL, function(customEvent) {
+    castContext.addCustomMessageListener(CHANNEL, function (customEvent) {
       // TODO ici mettre une structure json de votre choix.
-      const pos = customEvent.data.msg.split(',');    
+      const pos = customEvent.data.msg.split(',');
       setPosX(pos[0]);
       setPosY(pos[1]);
       spriteRef.current.x = pos[0] ?? spriteRef.current.x;
       spriteRef.current.y = pos[1] ?? spriteRef.current.y;
     });
-    
+
   }, [castContext]);
 
 
