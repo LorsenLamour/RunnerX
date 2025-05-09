@@ -99,11 +99,51 @@ const PixiCanvas = ({ castContext }) => {
         walkAnim.x = 100;
         walkAnim.y = 100;
         app.stage.addChild(walkAnim);
+        spriteRef.current = walkAnim
+
+
+        const jumpAnim = new PIXI.AnimatedSprite([
+          sheet.textures["jump_up.png"],
+          sheet.textures["jump_fall.png"]
+        ]);
+        jumpAnim.animationSpeed = 0.1;
+        jumpAnim.loop =true;
+        jumpAnim.play();
+        jumpAnim.x = 100;
+        jumpAnim.y = 100;
+        app.stage.addChild(jumpAnim);
+        spriteRef.currentt = jumpAnim
       });
 
 
 
   }, []);
+
+
+  React.useEffect(() => {
+    const handleKeyDown = (event) => {
+      const sprite = spriteRef.current;
+      if (!sprite) return;
+  
+      const step = 2;
+  
+      if (event.key === 'ArrowLeft') {
+        sprite.x -= step;
+        sprite.scale.x = 1;
+      } else if (event.key === 'ArrowRight') {
+        sprite.x += step;
+        sprite.scale.x = -1;
+     } //else if (event.key ==='ArrowUp'){
+      //   spriteup.y +=step;
+      //   spriteup.scale.y = 1
+
+      // }
+    };
+  
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, []);
+  
 
 
   React.useEffect(() => {
