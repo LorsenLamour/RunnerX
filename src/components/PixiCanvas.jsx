@@ -300,7 +300,7 @@ const PixiCanvas = ({ castContext }) => {
       const listener = castContext.addCustomMessageListener(CHANNEL, function (customEvent) {
       messageRef.current = msg;
         const msg = JSON.parse(customEvent.data).msg;
-        switch (msg) {
+        switch (data.msg) {
           case "jump":
             if (velocityY === 0) {
               velocityY = -25;
