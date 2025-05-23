@@ -1,5 +1,5 @@
 import * as PIXI from 'pixi.js';
-import React from 'react';
+import React, { useEffect } from 'react';
 import GameOverMessage from './GameOverMessage';
 import './GameOverMessage.css';
 import CountdownTimer from './CountdownTimer';
@@ -12,6 +12,7 @@ const PixiCanvas = ({ castContext }) => {
   const spriteRef = React.useRef(null);
   const walkAnimRef = React.useRef(null);
   const isMovingRef = React.useRef(false);
+    const messageRef = React.useRef(null); 
   // const [posX, setPosX] = React.useState(30);
   //const [posY, setPosY] = React.useState(30);
   const [gameOver, setGameOver] = React.useState(false);
@@ -20,7 +21,7 @@ const PixiCanvas = ({ castContext }) => {
   React.useEffect(() => {
     const app = new PIXI.Application({
       view: canvasRef.current,
-      width: 785,//1285
+      width: 1285,
       height: 720,
       backgroundAlpha: 0,
     });
@@ -69,7 +70,7 @@ const PixiCanvas = ({ castContext }) => {
       //deathTriangle(370, 350, 50, 50), // Cette position reste en commentaire pour la version difficile du jeu.
       deathTriangle(699, 250, 50, 50),
       deathTriangle(899, 400, 50, 50),
-      deathTriangle(1129, 550, 50, 50), // Version B pour le test A/B on met en commentaire les positions des triangles pour faciliter le nv.
+      //deathTriangle(1129, 550, 50, 50), // Version B pour le test A/B on met en commentaire les positions des triangles pour faciliter le nv.
     ];
     deathTriangles.forEach(obt => app.stage.addChild(obt));
 
@@ -297,6 +298,7 @@ const PixiCanvas = ({ castContext }) => {
       if (!castContext) return;
 
       const listener = castContext.addCustomMessageListener(CHANNEL, function (customEvent) {
+      messageRef.current = msg;
         const msg = JSON.parse(customEvent.data).msg;
         switch (msg) {
           case "jump":
@@ -305,7 +307,7 @@ const PixiCanvas = ({ castContext }) => {
               switchAnim(jumpAnim);
             }
             break;
-
+// utilise un useRef depixi text, pour voir le message qu'il y a dedans
           case "avancer":
             pressedKeys.add("ArrowRight");
             break;
@@ -335,6 +337,9 @@ const PixiCanvas = ({ castContext }) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <canvas ref={canvasRef}></canvas>
+      <div style={{ color: 'white', marginTop: 10 }}>
+        Last Msg: {messageRef.current}
+      </div>
       {hasWon && <VictoryMessage timeLeft={timeLeft} restartGame={restartGame} />}
       {gameOver && !hasWon && <GameOverMessage restartGame={restartGame} />}
       {!gameOver && <CountdownTimer timeLeft={timeLeft} />}
