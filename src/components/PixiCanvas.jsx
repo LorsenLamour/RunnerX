@@ -2,6 +2,9 @@ import * as PIXI from 'pixi.js';
 import React from 'react';
 import GameOverMessage from './GameOverMessage';
 import './GameOverMessage.css';
+import CountdownTimer from './CountdownTimer';
+import VictoryMessage from './VictoryMessage';
+
 
 const PixiCanvas = ({ castContext }) => {
   const canvasRef = React.useRef(null);
@@ -12,7 +15,8 @@ const PixiCanvas = ({ castContext }) => {
   // const [posX, setPosX] = React.useState(30);
   //const [posY, setPosY] = React.useState(30);
   const [gameOver, setGameOver] = React.useState(false);
-
+  const [timeLeft, setTimeLeft] = React.useState(60); 
+  const [hasWon, setHasWon] = React.useState(false);
   React.useEffect(() => {
     const app = new PIXI.Application({
       view: canvasRef.current,
@@ -64,7 +68,7 @@ const PixiCanvas = ({ castContext }) => {
       deathTriangle(350, 350, 50, 50),
       deathTriangle(699, 250, 50, 50),
       deathTriangle(899, 400, 50, 50),
-      deathTriangle(1199, 550, 50, 50),
+      deathTriangle(1129, 550, 50, 50),
     ];
     deathTriangles.forEach(obt => app.stage.addChild(obt));
 
@@ -74,8 +78,20 @@ const PixiCanvas = ({ castContext }) => {
 
     PIXI.Loader.shared
       .add("spritesheet", "/texture.json")
+      .add("portal", "/portal.png")
       .load((loader, resources) => {
         const sheet = resources["spritesheet"].spritesheet;
+
+        // Portail
+        const portalTexture = resources["portal"].texture;
+        const portalSprite = new PIXI.Sprite(portalTexture);
+        portalSprite.x = 1260; 
+        portalSprite.y = 565;
+        portalSprite.width = 70;
+        portalSprite.height = 70;
+        portalSprite.anchor.set(0.5);
+        app.stage.addChild(portalSprite);
+
 
         // Walk animation
         const walkAnim = new PIXI.AnimatedSprite([
@@ -179,6 +195,22 @@ const PixiCanvas = ({ castContext }) => {
             }
           }
 
+          if (!hasWon) {
+            const portalBounds = portalSprite.getBounds();
+            const isTouchingPortal = (
+              spriteBounds.x + spriteBounds.width > portalBounds.x &&
+              spriteBounds.x < portalBounds.x + portalBounds.width &&
+              spriteBounds.y + spriteBounds.height > portalBounds.y &&
+              spriteBounds.y < portalBounds.y + portalBounds.height
+            );
+
+            if (isTouchingPortal) {
+              setHasWon(true);
+              setGameOver(true);
+              console.log("Victoire !");
+            }
+          }
+
           // Gravité et animation saut
           if (!landed) {
             velocityY += gravity;
@@ -218,19 +250,38 @@ const PixiCanvas = ({ castContext }) => {
         });
       });
 
-    // Nettoyage
+  
     return () => {
       window.removeEventListener("keydown", () => { });
       window.removeEventListener("keyup", () => { });
     };
   }, []);
-React.useEffect(() => {
-  if (gameOver) {
-    console.log('Game Over Triggered');
-  }
-}, [gameOver]);
+  React.useEffect(() => {
+    if (gameOver) {
+      console.log('Game Over');
+    }
+  }, [gameOver]);
+
+  React.useEffect(() => {
+    if (gameOver) return; // Ne pas décrémenter si le joueur est mort
+
+    const timer = setInterval(() => {
+      setTimeLeft(prev => {
+        if (prev <= 1) {
+          setGameOver(true); // Fin du jeu si temps écoulé
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(timer); 
+  }, [gameOver]);
+
   const restartGame = () => {
     setGameOver(false);
+    setTimeLeft(60);
+    setHasWon(false);
     // Réinitialise la position du sprite et d'autres variables de jeu ici
     spriteRef.current.visible = true;
     spriteRef.current.x = 30;
@@ -256,7 +307,9 @@ React.useEffect(() => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <canvas ref={canvasRef}></canvas>
-      {gameOver && <GameOverMessage restartGame={restartGame} />}
+      {hasWon && <VictoryMessage timeLeft={timeLeft} restartGame={restartGame} />}
+      {gameOver && !hasWon && <GameOverMessage restartGame={restartGame} />}
+      {!gameOver && <CountdownTimer timeLeft={timeLeft} />}
     </div>
   );
 };

@@ -1,0 +1,13 @@
+
+.victory-message {
+  position: absolute;
+  top: 30%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: rgba(0, 128, 0, 0.85);
+  color: white;
+  padding: 2rem;
+  border-radius: 1rem;
+  text-align: center;
+  z-index: 10;
+}
