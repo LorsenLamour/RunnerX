@@ -298,9 +298,10 @@ const PixiCanvas = ({ castContext }) => {
       if (!castContext) return;
 
       const listener = castContext.addCustomMessageListener(CHANNEL, function (customEvent) {
-      messageRef.current = msg;
-        const msg = JSON.parse(customEvent.data).msg;
-        switch (data.msg) {
+      const messageRecu = {message: "Position recue", position: customEvent.data.msg};
+      castContext.sendCustomMessageListener(CHANNEL,undefined,messageRecu) 
+      const msg = JSON.parse(customEvent.data).msg;
+        switch (msg) {
           case "jump":
             if (velocityY === 0) {
               velocityY = -25;
