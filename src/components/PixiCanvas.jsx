@@ -20,7 +20,7 @@ const PixiCanvas = ({ castContext }) => {
   React.useEffect(() => {
     const app = new PIXI.Application({
       view: canvasRef.current,
-      width: 1285,
+      width: 785,//1285
       height: 720,
       backgroundAlpha: 0,
     });
