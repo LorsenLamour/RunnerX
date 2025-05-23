@@ -10,7 +10,8 @@ function App({ castContext }) {
   return (
     <div style={{  }}>
 
-      <JeuAvecBouton />
+      <PixiCanvas />
+      
      
     </div>
   );

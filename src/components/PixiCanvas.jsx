@@ -15,7 +15,7 @@ const PixiCanvas = ({ castContext }) => {
   // const [posX, setPosX] = React.useState(30);
   //const [posY, setPosY] = React.useState(30);
   const [gameOver, setGameOver] = React.useState(false);
-  const [timeLeft, setTimeLeft] = React.useState(60); 
+  const [timeLeft, setTimeLeft] = React.useState(60);
   const [hasWon, setHasWon] = React.useState(false);
   React.useEffect(() => {
     const app = new PIXI.Application({
@@ -65,10 +65,11 @@ const PixiCanvas = ({ castContext }) => {
     };
 
     const deathTriangles = [
-      deathTriangle(350, 350, 50, 50),
+      deathTriangle(350, 350, 50, 50),// Version B pour le test A/B on met en commentaire les positions des triangles pour faciliter le nv.
+      //deathTriangle(370, 350, 50, 50), // Cette position reste en commentaire pour la version difficile du jeu.
       deathTriangle(699, 250, 50, 50),
       deathTriangle(899, 400, 50, 50),
-      deathTriangle(1129, 550, 50, 50),
+      deathTriangle(1129, 550, 50, 50), // Version B pour le test A/B on met en commentaire les positions des triangles pour faciliter le nv.
     ];
     deathTriangles.forEach(obt => app.stage.addChild(obt));
 
@@ -82,10 +83,10 @@ const PixiCanvas = ({ castContext }) => {
       .load((loader, resources) => {
         const sheet = resources["spritesheet"].spritesheet;
 
-        // Portail
+
         const portalTexture = resources["portal"].texture;
         const portalSprite = new PIXI.Sprite(portalTexture);
-        portalSprite.x = 1260; 
+        portalSprite.x = 1260;
         portalSprite.y = 565;
         portalSprite.width = 70;
         portalSprite.height = 70;
@@ -93,7 +94,6 @@ const PixiCanvas = ({ castContext }) => {
         app.stage.addChild(portalSprite);
 
 
-        // Walk animation
         const walkAnim = new PIXI.AnimatedSprite([
           sheet.textures["frame.png"],
           sheet.textures["frame-1.png"],
@@ -250,7 +250,7 @@ const PixiCanvas = ({ castContext }) => {
         });
       });
 
-  
+
     return () => {
       window.removeEventListener("keydown", () => { });
       window.removeEventListener("keyup", () => { });
@@ -275,7 +275,7 @@ const PixiCanvas = ({ castContext }) => {
       });
     }, 1000);
 
-    return () => clearInterval(timer); 
+    return () => clearInterval(timer);
   }, [gameOver]);
 
   const restartGame = () => {
@@ -291,18 +291,46 @@ const PixiCanvas = ({ castContext }) => {
   // Cast integration
   React.useEffect(() => {
     if (!castContext) return;
-
     const CHANNEL = 'urn:x-cast:testChannel';
-    castContext.addCustomMessageListener(CHANNEL, function (customEvent) {
-      const pos = customEvent.data.msg.split(',');
-      setPosX(pos[0]);
-      setPosY(pos[1]);
-      if (spriteRef.current) {
-        spriteRef.current.x = pos[0] ?? spriteRef.current.x;
-        spriteRef.current.y = pos[1] ?? spriteRef.current.y;
-      }
-    });
+
+    React.useEffect(() => {
+      if (!castContext) return;
+
+      const listener = castContext.addCustomMessageListener(CHANNEL, function (customEvent) {
+        const msg = JSON.parse(customEvent.data).msg;
+        switch (msg) {
+          case "jump":
+            if (velocityY === 0) {
+              velocityY = -25;
+              switchAnim(jumpAnim);
+            }
+            break;
+
+          case "avancer":
+            pressedKeys.add("ArrowRight");
+            break;
+          case "reculer":
+            pressedKeys.add("ArrowLeft");
+            break;
+          case "descendre":
+            pressedKeys.add("ArrowDown");
+            break;
+          case "jumpForward":
+            eventArrowUp();
+            pressedKeys.add("ArrowRight");
+            break;
+          default:
+            break;
+        }
+      });
+
+      return () => {
+        castContext.removeCustomMessageListener(CHANNEL, listener);
+      };
+    }, [castContext]);
+
   }, [castContext]);
+
 
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
