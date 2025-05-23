@@ -12,7 +12,7 @@ const PixiCanvas = ({ castContext }) => {
   const spriteRef = React.useRef(null);
   const walkAnimRef = React.useRef(null);
   const isMovingRef = React.useRef(false);
-    const messageRef = React.useRef(null); 
+  //const messageRef = React.useRef(null); 
   // const [posX, setPosX] = React.useState(30);
   //const [posY, setPosY] = React.useState(30);
   const [gameOver, setGameOver] = React.useState(false);
@@ -109,7 +109,7 @@ const PixiCanvas = ({ castContext }) => {
         app.stage.addChild(walkAnim);
         walkAnimRef.current = walkAnim;
 
-        // Jump animation
+
         const jumpAnim = new PIXI.AnimatedSprite([
           sheet.textures["jump_up.png"],
           sheet.textures["jump_fall.png"]
@@ -143,7 +143,6 @@ const PixiCanvas = ({ castContext }) => {
           const step = 3;
           let moved = false;
 
-          // Déplacement horizontal (même pendant le saut)
           if (pressedKeys.has("ArrowLeft")) {
             sprite.x -= step;
             sprite.scale.x = 1;
@@ -161,7 +160,6 @@ const PixiCanvas = ({ castContext }) => {
           const spriteBounds = sprite.getBounds();
           let landed = false;
 
-          // Collision avec plateformes
           for (const obstacle of obstacles) {
             const bounds = obstacle.getBounds();
             const isTouching = (
@@ -192,7 +190,7 @@ const PixiCanvas = ({ castContext }) => {
               sprite.visible = false;
               setGameOver(true);
               console.log("Le joueur est mort en touchant un triangle !");
-              break;  // Sort de la boucle dès que le joueur meurt
+              break;
             }
           }
 
@@ -212,7 +210,7 @@ const PixiCanvas = ({ castContext }) => {
             }
           }
 
-          // Gravité et animation saut
+
           if (!landed) {
             velocityY += gravity;
             sprite.y += velocityY;
@@ -226,7 +224,6 @@ const PixiCanvas = ({ castContext }) => {
             switchAnim(walkAnim);
           }
 
-          // Mort si tombe hors de l'écran
           if (sprite.y > app.screen.height + 100) {
             sprite.visible = false;
             setGameOver(true);
@@ -235,11 +232,11 @@ const PixiCanvas = ({ castContext }) => {
         });
 
 
-        // Gestion des touches
+
         window.addEventListener("keydown", (e) => {
           pressedKeys.add(e.key);
 
-          // Saut
+
           if (e.key === "ArrowUp" && velocityY === 0) {
             velocityY = -25;
             switchAnim(jumpAnim);
@@ -264,12 +261,12 @@ const PixiCanvas = ({ castContext }) => {
   }, [gameOver]);
 
   React.useEffect(() => {
-    if (gameOver) return; // Ne pas décrémenter si le joueur est mort
+    if (gameOver) return;
 
     const timer = setInterval(() => {
       setTimeLeft(prev => {
         if (prev <= 1) {
-          setGameOver(true); // Fin du jeu si temps écoulé
+          setGameOver(true);
           return 0;
         }
         return prev - 1;
@@ -283,7 +280,6 @@ const PixiCanvas = ({ castContext }) => {
     setGameOver(false);
     setTimeLeft(60);
     setHasWon(false);
-    // Réinitialise la position du sprite et d'autres variables de jeu ici
     spriteRef.current.visible = true;
     spriteRef.current.x = 30;
     spriteRef.current.y = 455;
@@ -298,9 +294,9 @@ const PixiCanvas = ({ castContext }) => {
       if (!castContext) return;
 
       const listener = castContext.addCustomMessageListener(CHANNEL, function (customEvent) {
-      const messageRecu = {message: "Position recue", position: customEvent.data.msg};
-      castContext.sendCustomMessageListener(CHANNEL,undefined,messageRecu) 
-      const msg = JSON.parse(customEvent.data).msg;
+        //const messageRecu = {message: "Position recue", position: customEvent.data.msg};
+        //castContext.sendCustomMessageListener(CHANNEL,undefined,messageRecu) 
+        const msg = JSON.parse(customEvent.data).msg;
         switch (msg) {
           case "jump":
             if (velocityY === 0) {
@@ -308,7 +304,6 @@ const PixiCanvas = ({ castContext }) => {
               switchAnim(jumpAnim);
             }
             break;
-// utilise un useRef depixi text, pour voir le message qu'il y a dedans
           case "avancer":
             pressedKeys.add("ArrowRight");
             break;
@@ -338,9 +333,6 @@ const PixiCanvas = ({ castContext }) => {
   return (
     <div style={{ display: 'flex', justifyContent: 'center' }}>
       <canvas ref={canvasRef}></canvas>
-      <div style={{ color: 'white', marginTop: 10 }}>
-        Last Msg: {messageRef.current}
-      </div>
       {hasWon && <VictoryMessage timeLeft={timeLeft} restartGame={restartGame} />}
       {gameOver && !hasWon && <GameOverMessage restartGame={restartGame} />}
       {!gameOver && <CountdownTimer timeLeft={timeLeft} />}
