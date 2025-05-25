@@ -1,5 +1,5 @@
 import React from 'react';
-import './VictoryMessage.css';
+import './ComponentsCss/VictoryMessage.css';
 
 const VictoryMessage = ({ timeLeft, restartGame }) => {
   const timeTaken = 60 - timeLeft;

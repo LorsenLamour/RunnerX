@@ -1,7 +1,5 @@
-// src/main.jsx
 import React from 'react';
 import ReactDOM from 'react-dom/client';
-import PixiCanvas from './components/PixiCanvas';
 import JeuAvecBouton from './components/BoutonStart';
 
 
@@ -10,7 +8,7 @@ function App({ castContext }) {
   return (
     <div style={{  }}>
 
-      <PixiCanvas />
+      <JeuAvecBouton />
       
      
     </div>

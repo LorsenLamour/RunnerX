@@ -1,0 +1,31 @@
+{
+  "levelName": "Niveau 1",
+  "dimensions": {
+    "width": 1385,
+    "height": 800
+  },
+  "playerStart": {
+    "x": 30,
+    "y": 455
+  },
+  "portal": {
+    "x": 1260,
+    "y": 565,
+    "width": 70,
+    "height": 70
+  },
+  "obstacles": [
+    { "x": 9, "y": 500, "width": 140, "height": 30 },
+    { "x": 300, "y": 400, "width": 150, "height": 30 },
+    { "x": 500, "y": 600, "width": 150, "height": 50 },
+    { "x": 550, "y": 300, "width": 200, "height": 30 },
+    { "x": 1130, "y": 600, "width": 150, "height": 30 },
+    { "x": 800, "y": 450, "width": 200, "height": 30 }
+  ],
+  "deathZones": [
+    { "x": 350, "y": 350, "width": 50, "height": 50 },
+    { "x": 699, "y": 250, "width": 50, "height": 50 },
+    { "x": 899, "y": 400, "width": 50, "height": 50 }
+  ],
+  "timeLimit": 60
+}
