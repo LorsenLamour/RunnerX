@@ -2,6 +2,9 @@
 
 Receiver ID: 6BE88BF2
 
+# Version de notre jeu V.7.0.0
+# Version de notre react V6.3.0 
+
 # Installation des libs
 
     npm i
@@ -24,6 +27,9 @@ J'ai simplifié le code. J'ai mis les informations de niveau dans un fichier JSO
 J'ai ajouté une fonctionnalité musicale qui permet au joueur d'écouter de la musique pendant qu'il joue.
 J'ai aussi corrigé un autre bug qui était très compliqué : quand le joueur appuyait sur "Commencer", les informations de la page du bouton s'affichaient en arrière-plan du jeu. J'ai donc cherché un moyen de cacher cette page une fois que le joueur appuie sur "Start".
 J'ai également ajouté un bouton "i" qui permet à l'utilisateur de consulter des informations sur le jeu, comme les contrôles et l'objectif.
+
+
+# J'ai ajouté le rapport ainsi que le document de conception du jeu dans le répertoire RapportJeu.
 
 # Les fonctionnalités et l'organisation du jeu
 
