@@ -2,7 +2,6 @@ import React, { useRef, useImperativeHandle, forwardRef, useState } from 'react'
 const GameMusic = forwardRef((props, ref) => {
   const audioRef = useRef(null);
   const [isPlaying, setIsPlaying] = useState(false);
-
   useImperativeHandle(ref, () => ({
     playMusic() {
       if (audioRef.current) {
@@ -18,6 +17,7 @@ const GameMusic = forwardRef((props, ref) => {
       if (audioRef.current) {
         audioRef.current.pause();
         setIsPlaying(false);
+        
       }
     }
   }));
@@ -43,8 +43,8 @@ const GameMusic = forwardRef((props, ref) => {
         <source src="/music/background-music.mp3" type="audio/mpeg" />
       </audio>
       {props.showControls && (
-        <button onClick={toggleMusic}>
-          {isPlaying ? 'Pause 🎵' : 'Play 🎵'}
+        <button  style={{width: '150px', height: '50px', fontSize:'20px'}} onClick={toggleMusic}>
+          {isPlaying ? 'Pause 🎵'  : 'Play 🎵'}
         </button>
       )}
     </div>

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import './componentsCss/GameInfoBtn.css'; // Pour le style si tu veux séparer
+import './componentsCss/GameInfoBtn.css'; 
 
 const GameInfoButton = () => {
   const [showInfo, setShowInfo] = useState(false);
@@ -8,8 +8,16 @@ const GameInfoButton = () => {
     setShowInfo(!showInfo);
   };
 
+  const iButton = document.querySelector('.info-button');
+
+  setInterval(() => {
+    if (iButton) {
+      iButton.style.color = iButton.style.color === 'red' ? 'white' : 'red';
+    }
+  }, 2000)
+
   return (
-    <div style={{ position: 'absolute', top: 10, right: 10, zIndex: 10 }}>
+    <div style={{ position: 'absolute', top: 10, right: 350, zIndex: 10 }}>
       <button className="info-button" onClick={toggleInfo}>i</button>
       {showInfo && (
         <div className="info-box">

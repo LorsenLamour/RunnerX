@@ -33,7 +33,7 @@ const JeuAvecBouton = ({ castContext }) => {
             alignItems: 'center',
           }}
         >
-          <h1>Bienvenue au RunnerX</h1>
+          <h1>Bienvenue au RunnerX v.7.0.0 </h1>
           <button
             onClick={handleStart}
             style={{
@@ -41,6 +41,9 @@ const JeuAvecBouton = ({ castContext }) => {
               padding: '15px 30px',
               cursor: 'pointer',
               marginTop: '20px',
+              backgroundColor: 'green',
+              color: 'white'
+
             }}
           >
             Commencer

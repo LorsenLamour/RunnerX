@@ -6,7 +6,6 @@ import VictoryMessage from './VictoryMessage';
 import GameInfoBtn from './GameInfoBtn';
 import GameMusic from './GameMusic';
 
-
 const PixiCanvas = ({ castContext }) => {
   const canvasRef = useRef(null);
   const pixiAppRef = useRef(null);
@@ -16,12 +15,19 @@ const PixiCanvas = ({ castContext }) => {
   const [gameOver, setGameOver] = useState(false);
   const [timeLeft, setTimeLeft] = useState(60);
   const [hasWon, setHasWon] = useState(false);
-  const [posX, setPosX] = React.useState(30);
-  const [posY, setPosY] = React.useState(30);
+  const [posX, setPosX] = useState(30);
+  const [posY, setPosY] = useState(30);
+  const [alertTimer, setAlertTimer] = useState("white");
+  const [jumping, setJumping] = useState(false);
+  const [forward, setFoward ] = useState(false);
+    const [backward, setBackward ] = useState(false);
+
+
 
   React.useEffect(() => {
-    let handleKeyDown = () => { };
-    let handleKeyUp = () => { };
+    let handleKeyDown = () => {};
+    let handleKeyUp = () => {};
+
     fetch('/levels/level1.json')
       .then(res => res.json())
       .then(levelData => {
@@ -51,9 +57,10 @@ const PixiCanvas = ({ castContext }) => {
           graphics.y = y;
           return graphics;
         };
+
         const deathTriangle = (x, y, width, height) => {
           const graphics = new PIXI.Graphics();
-          graphics.beginFill(0xff0000); // Rouge
+          graphics.beginFill(0xff0000);
           graphics.moveTo(0, height);
           graphics.lineTo(width / 2, 0);
           graphics.lineTo(width, height);
@@ -63,6 +70,7 @@ const PixiCanvas = ({ castContext }) => {
           graphics.y = y;
           return graphics;
         };
+
         levelData.obstacles.forEach(ob => {
           const obstacle = createObstacle(ob.x, ob.y, ob.width, ob.height);
           app.stage.addChild(obstacle);
@@ -143,12 +151,16 @@ const PixiCanvas = ({ castContext }) => {
                 sprite.x -= step;
                 sprite.scale.x = 1;
                 moved = true;
+                setBackward(true)
+                setTimeout(() => setBackward(false), 1000);
               }
 
               if (pressedKeys.has("ArrowRight")) {
                 sprite.x += step;
                 sprite.scale.x = -1;
                 moved = true;
+                setFoward(true)
+                setTimeout(() => setFoward(false), 1000);
               }
 
               isMovingRef.current = moved;
@@ -185,8 +197,7 @@ const PixiCanvas = ({ castContext }) => {
                 if (isTouchingTriangle) {
                   sprite.visible = false;
                   setGameOver(true);
-                  console.log("Le joueur est mort en touchant un triangle !");
-                  break;  
+                  break;
                 }
               }
 
@@ -202,11 +213,9 @@ const PixiCanvas = ({ castContext }) => {
                 if (isTouchingPortal) {
                   setHasWon(true);
                   setGameOver(true);
-                  console.log("Victoire !");
                 }
               }
 
-            
               if (!landed) {
                 velocityY += gravity;
                 sprite.y += velocityY;
@@ -223,17 +232,20 @@ const PixiCanvas = ({ castContext }) => {
               if (sprite.y > app.screen.height + 100) {
                 sprite.visible = false;
                 setGameOver(true);
-                console.log("Le joueur est mort !");
               }
             });
+
             handleKeyDown = (e) => {
               if (gameOver) return;
               pressedKeys.add(e.key);
               if (e.key === "ArrowUp" && velocityY === 0) {
                 velocityY = -25;
                 switchAnim(jumpAnim);
+                setJumping(true);
+                setTimeout(() => setJumping(false), 1000);
               }
             };
+
             handleKeyUp = (e) => {
               if (gameOver) return;
               pressedKeys.delete(e.key);
@@ -242,12 +254,14 @@ const PixiCanvas = ({ castContext }) => {
             window.addEventListener("keydown", handleKeyDown);
             window.addEventListener("keyup", handleKeyUp);
           });
+
         return () => {
           window.removeEventListener("keydown", handleKeyDown);
           window.removeEventListener("keyup", handleKeyUp);
         };
-      })
+      });
   }, []);
+
   React.useEffect(() => {
     if (gameOver) {
       console.log('Game Over');
@@ -255,18 +269,19 @@ const PixiCanvas = ({ castContext }) => {
   }, [gameOver]);
 
   React.useEffect(() => {
-    if (gameOver) return; 
-
+    if (gameOver) return;
     const timer = setInterval(() => {
       setTimeLeft(prev => {
+        if (prev <= 10) {
+          setAlertTimer("red");
+        }
         if (prev <= 1) {
-          setGameOver(true); 
+          setGameOver(true);
           return 0;
         }
         return prev - 1;
       });
     }, 1000);
-
     return () => clearInterval(timer);
   }, [gameOver]);
 
@@ -278,9 +293,9 @@ const PixiCanvas = ({ castContext }) => {
     spriteRef.current.x = 30;
     spriteRef.current.y = 455;
   };
+
   React.useEffect(() => {
     if (!castContext) return;
-
     const CHANNEL = 'urn:x-cast:testChannel';
     castContext.addCustomMessageListener(CHANNEL, function (customEvent) {
       const pos = customEvent.data.msg.split(',');
@@ -290,14 +305,60 @@ const PixiCanvas = ({ castContext }) => {
   }, [castContext]);
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'center' }}>
+    <div style={{ position: 'relative', display: 'flex', justifyContent: 'center' }}>
+     {jumping && (
+        <div style={{
+          position: 'absolute',
+          top: 10,
+          left: 350,
+          background: 'rgba(0,0,0,0.5)',
+          color: 'white',
+          padding: '8px 12px',
+          borderRadius: '5px',
+          fontSize: '18px',
+          zIndex: 10
+        }}>
+          Saut en cours...
+        </div> 
+      )}
+       {backward && (
+        <div style={{
+          position: 'absolute',
+          top: 10,
+          left: 350,
+          background: 'rgba(0,0,0,0.5)',
+          color: 'white',
+          padding: '8px 12px',
+          borderRadius: '5px',
+          fontSize: '18px',
+          zIndex: 10
+        }}>
+          Recule en cours...
+        </div> 
+      )}
+       {forward && (
+        <div style={{
+          position: 'absolute',
+          top: 10,
+          left: 350,
+          background: 'rgba(0,0,0,0.5)',
+          color: 'white',
+          padding: '8px 12px',
+          borderRadius: '5px',
+          fontSize: '18px',
+          zIndex: 10
+        }}>
+          Avancement en cours...
+        </div> 
+      )}
       <canvas ref={canvasRef}></canvas>
       <GameInfoBtn />
       <GameMusic />
       {hasWon && <VictoryMessage timeLeft={timeLeft} restartGame={restartGame} />}
       {gameOver && !hasWon && <GameOverMessage restartGame={restartGame} />}
-      {!gameOver && <CountdownTimer timeLeft={timeLeft} />}
+      {!gameOver && <CountdownTimer timeLeft={timeLeft} alertColor={alertTimer} />}
     </div>
   );
 };
-export default PixiCanvas; 
+
+export default PixiCanvas;
