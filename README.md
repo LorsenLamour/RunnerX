@@ -20,8 +20,11 @@ Via le html production_index.html qui utilise le bundle généré dans le réper
 # Création du build pour la production avec React & Vite
 
     npm run build
+# Maquette de RunnerX avec Figma 
 
-Capture d'écran du rendu final
+<img width="1333" height="818" alt="image" src="https://github.com/user-attachments/assets/8161c532-29a5-4df3-a044-6869b06dbd6a" />
+
+# Capture d'écran du rendu final
 
 ![alt text](image.png)
 
