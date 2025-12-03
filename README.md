@@ -26,12 +26,12 @@ Via le html production_index.html qui utilise le bundle généré dans le réper
 
 # Capture d'écran du rendu final
 
-<img width="900" height="438" alt="image" src="https://github.com/user-attachments/assets/8bbf3c83-edfb-4a2b-81f8-9951fc755661" />
+1. <img width="900" height="438" alt="image" src="https://github.com/user-attachments/assets/8bbf3c83-edfb-4a2b-81f8-9951fc755661" />
 
 
-![alt text](image.png)
+2. ![alt text](image.png)
 
-<img width="900" height="460" alt="image" src="https://github.com/user-attachments/assets/a2f9a70f-68d7-404f-8a99-22b4c17b40a6" />
+3. <img width="900" height="460" alt="image" src="https://github.com/user-attachments/assets/a2f9a70f-68d7-404f-8a99-22b4c17b40a6" />
 
 
 # Message
