@@ -26,7 +26,13 @@ Via le html production_index.html qui utilise le bundle généré dans le réper
 
 # Capture d'écran du rendu final
 
+<img width="900" height="438" alt="image" src="https://github.com/user-attachments/assets/8bbf3c83-edfb-4a2b-81f8-9951fc755661" />
+
+
 ![alt text](image.png)
+
+<img width="900" height="460" alt="image" src="https://github.com/user-attachments/assets/a2f9a70f-68d7-404f-8a99-22b4c17b40a6" />
+
 
 # Message
 J'ai simplifié le code. J'ai mis les informations de niveau dans un fichier JSON, comme le prof nous l'avait conseillé. J'ai eu beaucoup de mal, je rencontrais des bugs à chaque fois. J'ai dû vérifier chaque ligne de code pour voir si j'avais bien importé les informations du fichier JSON. J'ai supprimé des fichiers qui n'étaient pas importants.
